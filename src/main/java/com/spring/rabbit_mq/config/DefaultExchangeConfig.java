@@ -38,6 +38,12 @@ public class DefaultExchangeConfig {
         return new Queue(defaultQueue,true, false,false);
     }
 
+    @Bean
+    Queue createQueue1 (){
+        return new Queue(defaultQueue+1,true, false,false);
+    }
+
+
 
     @Bean
     public AmqpTemplate defaultQueue(ConnectionFactory connectionFactory, MessageConverter messageConverter){
@@ -51,6 +57,7 @@ public class DefaultExchangeConfig {
     @PostConstruct
     public void init(){
         amqpAdmin.declareQueue(createQueue());
+        amqpAdmin.declareQueue(createQueue1());
     }
 
 
