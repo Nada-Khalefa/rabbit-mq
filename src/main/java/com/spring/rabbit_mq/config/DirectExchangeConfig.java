@@ -2,6 +2,9 @@ package com.spring.rabbit_mq.config;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -69,6 +72,15 @@ public class DirectExchangeConfig {
     Binding createDirectBinding3(){
         return BindingBuilder.bind(createDirectQueue3()).to(createDirectExchange()).with(binding3);
     }
+
+    @Bean
+    public AmqpTemplate directQueue(ConnectionFactory connectionFactory, MessageConverter messageConverter){
+        RabbitTemplate rabbitTemplate= new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(messageConverter);
+        rabbitTemplate.setExchange(exchange); // Default Exchange -> Routing Key= Queue name
+        return rabbitTemplate;
+    }
+
 
     @PostConstruct
     public void init(){
