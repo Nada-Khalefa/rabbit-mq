@@ -1,6 +1,6 @@
 package com.spring.rabbit_mq.controller;
 
-import com.spring.rabbit_mq.model.Message;
+import com.spring.rabbit_mq.model.MessageDto;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 @RestController
@@ -27,8 +26,8 @@ public class HeaderExchangeController {
 
     ) {
 
-        Message message= new Message("header", LocalDateTime.now());
-        MessageBuilder messageBuilder= MessageBuilder.withBody(message.toString().getBytes());
+        MessageDto messageDto = new MessageDto("header", LocalDateTime.now());
+        MessageBuilder messageBuilder= MessageBuilder.withBody(messageDto.toString().getBytes());
         if(error != null){
             messageBuilder.setHeader("error", error );
         }

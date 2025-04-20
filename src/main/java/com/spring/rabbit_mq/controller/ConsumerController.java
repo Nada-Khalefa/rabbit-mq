@@ -1,6 +1,6 @@
 package com.spring.rabbit_mq.controller;
 
-import com.spring.rabbit_mq.model.Message;
+import com.spring.rabbit_mq.model.MessageDto;
 import com.spring.rabbit_mq.service.ConsumerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ public class ConsumerController {
     private ConsumerService consumerService;
 
     @GetMapping("/messages/{queueName}")
-    public List<Message> getMessage(@PathVariable String queueName){
+    public List<MessageDto> getMessage(@PathVariable String queueName){
         return consumerService.receiveMessages(queueName);
 
     }

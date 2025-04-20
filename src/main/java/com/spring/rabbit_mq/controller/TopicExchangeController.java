@@ -1,9 +1,8 @@
 package com.spring.rabbit_mq.controller;
 
-import com.spring.rabbit_mq.model.Message;
+import com.spring.rabbit_mq.model.MessageDto;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +20,8 @@ public class TopicExchangeController {
     @GetMapping("/message/{key}")
     public String sendMessage(@PathVariable String key){
 
-        Message message= new Message("topic", LocalDateTime.now());
-        topicQueue.convertAndSend(key, message);
+        MessageDto messageDto = new MessageDto("topic", LocalDateTime.now());
+        topicQueue.convertAndSend(key, messageDto);
 
         return "Success Topic Exchange";
 
