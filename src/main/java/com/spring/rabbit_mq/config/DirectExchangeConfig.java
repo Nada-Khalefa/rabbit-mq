@@ -25,6 +25,9 @@ public class DirectExchangeConfig {
     @Value("${rabbit.direct3.queue}")
     private String directQueue3;
 
+    @Value("${rabbit.dead-line-queue}")
+    private String directQueue4;
+
     @Value("${rabbit.direct1.bi}")
     private String binding1;
 
@@ -40,7 +43,11 @@ public class DirectExchangeConfig {
 
     @Bean
     Queue createDirectQueue1 (){
-        return new Queue(directQueue1,true, false,false);
+        return QueueBuilder.durable(directQueue1)
+                .deadLetterExchange("")// default exchange Q4
+                .deadLetterRoutingKey(directQueue4)
+                .build();
+        //return new Queue(directQueue1,true, false,false);
     }
 
     @Bean
@@ -52,6 +59,10 @@ public class DirectExchangeConfig {
         return new Queue(directQueue3,true, false,false);
     }
 
+    @Bean
+    Queue createDeadLineQueue (){
+        return new Queue(directQueue4,true, false,false);
+    }
     @Bean
     DirectExchange createDirectExchange(){
 
@@ -87,6 +98,7 @@ public class DirectExchangeConfig {
         amqpAdmin.declareQueue(createDirectQueue1());
         amqpAdmin.declareQueue(createDirectQueue2());
         amqpAdmin.declareQueue(createDirectQueue3());
+        amqpAdmin.declareQueue(createDeadLineQueue());
 
         amqpAdmin.declareExchange(createDirectExchange());
 

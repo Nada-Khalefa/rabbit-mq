@@ -55,6 +55,8 @@ public class RabbitMqConfig {
         containerFactory.setPrefetchCount(5); // how many messages that consumer can fetch from queue
         containerFactory.setAutoStartup(true); // Listener work in initialization App
 
+        containerFactory.setDefaultRequeueRejected(false); // if error happen donot do reconsum in queue
+
         return containerFactory;
     }
 
